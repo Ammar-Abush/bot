@@ -1,0 +1,12 @@
+{% extends 'csbot/layout.html' %}
+
+{% block body %}
+    {% for chat in chats %}
+        {% if chat.owner == request.user %}
+            <p><strong>You</strong></p>
+            <p> {{chat.message}} </p>
+            <p><strong>CSBOT</strong></p>
+            <p>{{chat.response}}</p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
