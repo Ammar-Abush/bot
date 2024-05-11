@@ -6,9 +6,8 @@ print(sys.path)
 from .FacultyGPT.manager.chat_manager import ChatManager
 
 class User(AbstractUser):
-     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.chat_manager = ChatManager()
+    
+    pass
     
 class Chat(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)

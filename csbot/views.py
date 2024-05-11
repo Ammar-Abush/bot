@@ -12,13 +12,14 @@ from django.utils import timezone
 
 
 
-
+chatManagers = {}
+chatManagers["admin"] = ChatManager()
 def index(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             prompt = request.POST["userinput"]
-            response = english_provider.Prompt(prompt, request.user.chat_manager)
-            print(request.user.username, request.user.chat_manager)
+            response = english_provider.Prompt(prompt, chatManagers[request.user.username])
+            print(request.user.username, chatManagers[request.user.username])
             chat = Chat(owner = request.user, message = prompt, response = response, created_at = timezone.now())
             chat.save()
             print(response)
@@ -86,6 +87,7 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
+            chatManagers[user.username] = ChatManager()
         except IntegrityError:
             return render(request, "csbot/register.html", {
                 "message": "Username already taken."
