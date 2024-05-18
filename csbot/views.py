@@ -18,6 +18,11 @@ def index(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             prompt = request.POST["userinput"]
+            if request.user.username in chatManagers:
+                chatManagerInstance = chatManagers[request.user.username]
+            else:
+                chatManagerInstance = ChatManager()
+                chatManagers[request.user.username] = chatManagerInstance
             response = english_provider.Prompt(prompt, chatManagers[request.user.username])
             print(request.user.username, chatManagers[request.user.username])
             chat = Chat(owner = request.user, message = prompt, response = response, created_at = timezone.now())
